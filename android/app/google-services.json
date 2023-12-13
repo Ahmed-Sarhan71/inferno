@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "561467021784",
+    "project_id": "fire-fighting-robot-7a1ea",
+    "storage_bucket": "fire-fighting-robot-7a1ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561467021784:android:f9b33b22c19b6d99843aad",
+        "android_client_info": {
+          "package_name": "com.example.inferno"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx2Ishpm56BsqslIRtFwHEbr2jS_eLVw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
