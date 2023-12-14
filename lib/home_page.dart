@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'monitoring_screen.dart';
 import 'user.dart';
 import 'home_screen.dart'; 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -14,6 +18,8 @@ class _HomePageState extends State<HomePage> {
     HomeScreen(),
     MonitoringScreen(),
     UserScreen(),
+    
+    
   ];
 
   @override

@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,39 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAuskBpnh7IUy4AfBllUPdN7N3MIjMCTnQ',
-    appId: '1:561467021784:web:eb7710f4409bc088843aad',
-    messagingSenderId: '561467021784',
-    projectId: 'fire-fighting-robot-7a1ea',
-    authDomain: 'fire-fighting-robot-7a1ea.firebaseapp.com',
-    storageBucket: 'fire-fighting-robot-7a1ea.appspot.com',
-    measurementId: 'G-KE3ZJXV7ZW',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBx2Ishpm56BsqslIRtFwHEbr2jS_eLVw0',
     appId: '1:561467021784:android:f9b33b22c19b6d99843aad',
     messagingSenderId: '561467021784',
     projectId: 'fire-fighting-robot-7a1ea',
     storageBucket: 'fire-fighting-robot-7a1ea.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB5dXyBhQWq6dyZnxlYa2QicUqYqNpaS6Y',
-    appId: '1:561467021784:ios:a2ec8b71e0709651843aad',
-    messagingSenderId: '561467021784',
-    projectId: 'fire-fighting-robot-7a1ea',
-    storageBucket: 'fire-fighting-robot-7a1ea.appspot.com',
-    iosBundleId: 'com.example.inferno',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB5dXyBhQWq6dyZnxlYa2QicUqYqNpaS6Y',
-    appId: '1:561467021784:ios:77701fe54a583c10843aad',
-    messagingSenderId: '561467021784',
-    projectId: 'fire-fighting-robot-7a1ea',
-    storageBucket: 'fire-fighting-robot-7a1ea.appspot.com',
-    iosBundleId: 'com.example.inferno.RunnerTests',
   );
 }
