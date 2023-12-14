@@ -1,7 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-class HomeScreen extends StatelessWidget {
+import 'dart:async'; // Import this for using Timer
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+String temperatureReading = 'N/A'; // Initial reading
+
+  Future<void> fetchTemperatureData() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://192.168.50.108:5000/dht'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          temperatureReading = '${data['temperature_c']}°C'; // Update the temperature reading
+        });
+      } else {
+        throw Exception('Failed to load temperature data');
+      }
+    } catch (e) {
+      print('Error fetching temperature data: $e');
+    }
+  }
+  
+@override
+  void initState() {
+    super.initState();
+    fetchTemperatureData(); // Fetch initial temperature reading
+    // Update temperature every 3 seconds
+    Timer.periodic(Duration(seconds: 3), (Timer t) {
+      fetchTemperatureData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -40,7 +75,10 @@ class HomeScreen extends StatelessWidget {
             'Temperature Reading',
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          trailing: Text('25°C', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+          trailing: Text(
+            temperatureReading,
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
         ),
         ListTile(
           title: Text(
@@ -59,10 +97,10 @@ class HomeScreen extends StatelessWidget {
             'Battery Status',
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          trailing: Text(
-            '85%',
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
+          // trailing: Text(
+          //   // '85%',
+          //   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          // ),
         ),
         ListTile(
           title: Text(
