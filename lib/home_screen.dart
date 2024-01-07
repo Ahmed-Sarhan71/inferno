@@ -8,30 +8,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-String temperatureReading = 'N/A'; // Initial reading
+  String temperatureReading = 'N/A'; // Initial reading
+  bool isConnected = false; // Initial connection status
 
   Future<void> fetchTemperatureData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.50.108:5000/dht'));
+          await http.get(Uri.parse('http://172.20.10.3:5000/dht'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
-          temperatureReading = '${data['temperature_c']}°C'; // Update the temperature reading
+          temperatureReading = '${data['temperature_c']}°C';
+          isConnected = true; // Update connection status to true
         });
       } else {
         throw Exception('Failed to load temperature data');
       }
     } catch (e) {
       print('Error fetching temperature data: $e');
+      setState(() {
+        isConnected = false; // Update connection status to false
+      });
     }
   }
-  
-@override
+
+  @override
   void initState() {
     super.initState();
-    fetchTemperatureData(); // Fetch initial temperature reading
-    // Update temperature every 3 seconds
+    fetchTemperatureData();
     Timer.periodic(Duration(seconds: 3), (Timer t) {
       fetchTemperatureData();
     });
@@ -64,10 +68,8 @@ String temperatureReading = 'N/A'; // Initial reading
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           trailing: ElevatedButton(
-            onPressed: () {
-              // Add your logic here to toggle robot status
-            },
-            child: Text('ON'), // Replace with dynamic status text
+            onPressed: null, // No action on button press
+            child: Text(isConnected ? 'ON' : 'OFF'), // Change button text based on connection
           ),
         ),
         ListTile(
@@ -80,28 +82,28 @@ String temperatureReading = 'N/A'; // Initial reading
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
         ),
-        ListTile(
-          title: Text(
-            'Camera',
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          trailing: ElevatedButton(
-            onPressed: () {
-              // Add your logic here to toggle camera status
-            },
-            child: Text('ON'), // Replace with dynamic camera status text
-          ),
-        ),
-        ListTile(
-          title: Text(
-            'Battery Status',
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          // trailing: Text(
-          //   // '85%',
-          //   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          // ),
-        ),
+        // ListTile(
+        //   title: Text(
+        //     'Camera',
+        //     style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        //   ),
+        //   trailing: ElevatedButton(
+        //     onPressed: () {
+        //       // Add your logic here to toggle camera status
+        //     },
+        //     child: Text('ON'), // Replace with dynamic camera status text
+        //   ),
+        // ),
+        // ListTile(
+        //   title: Text(
+        //     'Battery Status',
+        //     style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        //   ),
+        //   // trailing: Text(
+        //   //   // '85%',
+        //   //   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        //   // ),
+        // ),
         ListTile(
           title: Text(
             'Flame Detection',
@@ -121,7 +123,7 @@ String temperatureReading = 'N/A'; // Initial reading
 
    void fetchFlameStatus(BuildContext context) async {
     final response =
-        await http.get(Uri.parse('http://192.168.50.108:5000/fire-status'));
+        await http.get(Uri.parse('http://172.20.10.3:5000/fire-status'));
     if (response.statusCode == 200) {
       final data = response.body;
       final json = jsonDecode(data);
